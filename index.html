@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Giftoraa.pk</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+body {
+    margin: 0;
+    overflow-x: hidden;
+    font-family: Arial;
+     background: linear-gradient(#FFF8F6);
+}
+
+/* TOP BAR */
+.top-bar {
+    background: #7A1E2C;
+    color: #FFF8F6;
+    text-align: center;
+    padding: 20px;
+}
+
+/* HEADER */
+.main-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    padding: 10px 30px;
+}
+/* LEFT SIDE */
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+/* LOGO CENTER */
+.logo {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 20px; /* 👈 yahan value increase/decrease kar sakti ho */
+}
+
+.logo img {
+    width: 130px;
+    margin-left:20px; /* 👈 adjust karo */
+}
+/* RIGHT ICONS */
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.right-section {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap; /* ❗ IMPORTANT */
+}
+/* SEARCH BAR */
+.search-box {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #7A1E2C;
+    width: 150px; /* pehle 180/200 tha */
+}
+
+
+/* MENU */
+.menu-icon {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* SIDEBAR */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 250px;
+    height: 100%;
+    background: #FFF8F6;
+    padding: 20px;
+    transition: 0.3s;
+    box-shadow: 2px 0 10px #FFF8F6;
+    overflow-y: auto;
+}
+
+.side-menu.active {
+    left: 0;
+}
+
+/* ✅ 🔥 FIX: CATEGORY LINKS LINE BY LINE */
+.side-menu a {
+    display: block;
+    width: 100%;
+    padding: 12px 5px;
+    border-bottom: 1px solid #7A1E2C;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+}
+/* hover effect */
+.side-menu a:hover {
+    background: #f5f5f5;
+    padding-left: 10px;
+    transition: 0.3s;
+}
+
+
+.hero img {
+    width: 102.5%;
+    height: 400px;
+    object-fit: contain;
+}
+
+/* CATEGORY TITLE */
+.category-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #090909;
+}
+
+/* CATEGORY GRID */
+.categories {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 15px;
+}
+
+.cat-card {
+    text-align: center;
+    
+}
+
+.cat-card img {
+    width: 60%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.cat-card p {
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #090909;
+    
+}
+
+.cat-card img:hover {
+    transform: scale(1.05);
+    transition: 0.3s;
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background: white;
+    padding: 10px 0;
+}
+.nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    
+    
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    color: #7A1E2C;
+}
+/* RIGHT */
+.right-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+</style>
+</head>
+
+<body onload="updateCartCount();updateWishlistCount();">
+
+<div class="top-bar">
+<b>Discover Your Style – Giftoraa.pk 🎁</b>
+</div>
+<div class="main-header">
+
+    <!-- LEFT -->
+    <div class="left-section">
+        <span class="menu-icon" onclick="openMenu()">☰</span>
+        <div class="logo">
+            <img src="images/logo2.png">
+        </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="nav-links">
+        <a href="products.html?cat=necklace">Necklace</a>
+        <a href="products.html?cat=bracelet">Bracelet</a>
+        <a href="products.html?cat=earing">Earrings</a>
+        <a href="products.html?cat=makeup">Makeup</a>
+    </div>
+
+    <!-- RIGHT -->
+<div class="right-section">
+<input type="text" id="searchInput" 
+placeholder="Search for products" 
+class="search-box"
+onkeyup="searchProducts()">
+
+    <!-- ❤️ WISHLIST -->
+    <div class="icon-box" onclick="goToWishlist()">
+        ❤️
+        <span id="wishCount" class="badge">0</span>
+    </div>
+
+    <!-- 🛒 CART -->
+    <div class="icon-box" onclick="goToCart()">
+        🛒
+        <span id="cartCount" class="badge">0</span>
+    </div>
+</div>
+    </div>
+
+</div>
+
+</div>
+<div id="productList"></div>
+<!-- SIDEBAR -->
+<div id="sideMenu" class="side-menu">
+    <span onclick="closeMenu()">✖</span>>
+
+    <h3>Categories</h3>
+
+    <a href="products.html?cat=makeup">Makeup Items</a>
+    <a href="products.html?cat=necklace">Necklace</a>
+    <a href="products.html?cat=bracelet">Bracelete</a>
+    <a href="products.html?cat=earing">Earings</a>
+    <a href="products.html?cat=hairaccessoriess">Hair Accessoriess</a>
+    <a href="products.html?cat=giftboxes">Gift Boxes</a>
+    <a href="products.html?cat=glasshampers">Glass Hampers</a>
+    <a href="products.html?cat=cbouquet">Chocolate Bouquet</a>
+    <a href="products.html?cat=hbouquet">Hijab Bouquet</a>
+    <a href="wishlist.html">wishlist</a>
+
+    <hr>
+
+    <p>📞 0328-8305621</p>
+    <p>📧 giftoraa@gmail.com</p>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+    <img src="images/logo1.png">
+
+</div>
+
+<div class="category-title">TOP CATEGORY</div>
+
+<div class="categories">
+
+    <div class="cat-card">
+        <a href="products.html?cat=necklace">
+            <img src="images/levender.jpeg">
+            <p>Necklace</p>
+        </a>
+    </div>
+
+    <div class="cat-card">
+        <a href="products.html?cat=makeup">
+            <img src="images/l1.jpeg">
+            <p>Makeup Items</p>
+        </a>
+    </div>
+
+    <div class="cat-card">
+        <a href="products.html?cat=hairaccessoriess">
+            <img src="images/c1.jpeg">
+            <p>Hair Accessoriess</p>
+        </a>
+    </div>
+      <div class="cat-card">
+        <a href="products.html?cat=hairaccessoriess">
+            <img src="images/s2.jpeg">
+            <p>Scrunchie</p>
+        </a>
+    </div>
+
+    <div class="cat-card">
+        <a href="products.html?cat=bracelet">
+            <img src="images/b1.jpeg">
+            <p>Bracelete</p>
+        </a>
+    </div>
+
+    <div class="cat-card">
+        <a href="products.html?cat=earing">
+            <img src="images/e1.jpeg">
+            <p>Earing</p>
+        </a>
+    </div>
+
+</div>
+<br>
+
+</br>
+
+</div>
+<div class="bottom-nav">
+    <a href="products.html">Shop</a>
+    <a href="wishlist.html">Wishlist</a>
+    <a href="cart.html">Cart</a>
+    <a href="login.html">Account</a>
+</div>
+
+<script src="script.js"></script>
+
+<script>
+function openMenu(){
+    document.getElementById("sideMenu").classList.add("active");
+}
+
+function closeMenu(){
+    document.getElementById("sideMenu").classList.remove("active");
+}
+
+function goToCart(){
+    window.location.href = "cart.html";
+}
+
+function goToWishlist(){
+    window.location.href = "wishlist.html";
+}
+</script>
+<script>
+function goSearch(){
+    let value = document.getElementById("searchInput").value.trim();
+
+    if(value === ""){
+        alert("Type something!");
+        return;
+    }
+
+    window.location.href = "products.html?search=" + value;
+}
+</script>
+</body>
+</html>

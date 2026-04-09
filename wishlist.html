@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Wishlist</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* HEADER */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8f8f8;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+/* BACK BUTTON */
+.back-btn {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border: none;
+    background: white;
+    color: #7A1E2C;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+/* SIDEBAR */
+
+/* SIDEBAR 🔥 FIXED */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 250px;
+    height: 100%;
+    background: #FFF8F6;
+    padding: 20px;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.side-menu.active {
+    left: 0;
+}
+
+/* LINKS */
+.side-menu a {
+    display: block;
+    width: 100%;
+    padding: 12px 5px;
+    border-bottom: 1px solid #7A1E2C;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+}
+
+.side-menu a:hover {
+    background: #f5f5f5;
+    padding-left: 10px;
+}
+
+</style>
+
+</head>
+
+<body onload="loadWishlist()">
+
+<header class="top-header">
+    <button onclick="goBack()" class="back-btn">⬅</button>
+    <b>Wishlist</b>
+</header>
+
+<!-- HEADER -->
+<div class="main-header">
+    <div class="menu-icon" onclick="openMenu()">☰</div>
+    <div class="logo">Pretty gifts for pretty souls🌸</div>
+
+    <div style="position:relative;">
+        🔍 
+        <span style="cursor:pointer; font-size:22px;">🛒</span>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sideMenu" class="side-menu">
+    <span onclick="closeMenu()">✖</span>
+
+    <h3>Categories</h3>
+  <a href="index.html">Home</a>
+
+    <a href="products.html?cat=makeup">Makeup Items</a>
+    <a href="products.html?cat=necklace">Necklace</a>
+     <a href="products.html?cat=bracelet">Bracelete</a>
+    <a href="products.html?cat=earing">Earings</a>
+    <a href="products.html?cat=hairaccessoriess">Hair Accessoriess</a>
+    <a href="products.html?cat=giftboxes">Gift Boxes</a>
+    <a href="products.html?cat=glasshampers">Glass Hampers</a>
+    <a href="products.html?cat=cbouquet">Chocolate Bouquet</a>
+     <a href="products.html?cat=hbouquet">Hijab Bouquet</a>
+     <a href="wishlist.html">wishlist</a>
+
+    <hr>
+
+    <h4>Need Help?</h4>
+    <p>📞 0328-8305621</p>
+    <p>📧 giftoraa@gmail.com</p>
+</div>
+
+<!-- WISHLIST ITEMS -->
+<div id="wishlistItems"></div>
+
+<script>
+
+// MENU
+function openMenu(){
+    document.getElementById("sideMenu").classList.add("active");
+}
+
+function closeMenu(){
+    document.getElementById("sideMenu").classList.remove("active");
+}
+
+// LOAD WISHLIST
+function loadWishlist(){
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    let div = document.getElementById("wishlistItems");
+
+    console.log("Wishlist Data:", wishlist); // 🔥 DEBUG
+
+    div.innerHTML = "";
+
+
+    if(wishlist.length === 0){
+        div.innerHTML = "<h3>No items in wishlist 💔</h3>";
+        return;
+    }
+
+    wishlist.forEach((item, index) => {
+      div.innerHTML += `
+<div onclick='openProductFromWishlist(${JSON.stringify(item)})' 
+style="border:1px solid #ccc; padding:10px; margin:10px; cursor:pointer;">
+            <img src="${item.img}" style="width:120px; height:120px; object-fit:cover;"><br><br>
+
+            <b>${item.name}</b><br>
+            Rs. ${item.price}<br><br>
+
+            <button onclick="removeItem(${index})">Remove ❌</button>
+        </div>
+        `;
+    });
+}
+
+// REMOVE ITEM
+function removeItem(index){
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    wishlist.splice(index, 1);
+
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+
+    loadWishlist();
+}
+
+function openProductFromWishlist(item){
+    localStorage.setItem("selectedProduct", JSON.stringify(item));
+    window.location.href = "product-detail.html";
+}
+/* BACK FUNCTION */
+function goBack(){
+    if(document.referrer !== ""){
+        window.history.back();
+    } else {
+        window.location.href = "index.html";
+    }
+}
+
+</script>
+
+</body>
+</html>

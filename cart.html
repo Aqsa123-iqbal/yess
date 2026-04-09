@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cart</title>
+
+<!-- CSS LINK (FIXED) -->
+<link rel="stylesheet" href="style.css">
+
+<!-- EXTRA STYLE FOR IMAGE -->
+<style>
+.card img {
+    width: 300px;
+    height: 260px;
+    margin-bottom:10px;
+}
+</style>
+
+</head>
+
+<body onload="showCart()">
+
+
+<header class="top-header">
+    <button onclick="goBack()" class="back-btn">⬅</button>
+    <b>Your Cart</b>
+</header>
+<nav>
+<a href="index.html">Home</a>
+<a href="products.html">Products</a>
+<a href="cart.html" class="active">Cart</a>
+<a href="wishlist.html">Wishlist</a>
+</nav>
+
+<div class="container">
+
+<!-- CART ITEMS -->
+<div id="cartItems"></div>
+
+<!-- TOTAL -->
+<h2>Total: Rs. <span id="total">0</span></h2>
+
+<br>
+
+<!-- CHECKOUT BUTTON -->
+<a href="checkout.html">
+    <button>Proceed to Checkout</button>
+</a>
+
+<br><br>
+
+<!-- CLEAR CART -->
+<button onclick="clearCart()">Clear Cart</button>
+
+</div>
+
+<!-- JS FILE -->
+<script src="script.js"></script>
+
+<script>
+
+</script>
+
+</body>
+</html>

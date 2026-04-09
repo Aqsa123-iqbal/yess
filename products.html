@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Products</title>
+
+<style>
+
+/* BODY */
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* 🔥 TOP HEADER (ONLY FIX) */
+.top-header {
+    position: relative;
+    text-align: center;
+    background: #7A1E2C;
+    color: white;
+    padding: 15px;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border: none;
+    background: white;
+    color: #7A1E2C;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* EXISTING HEADER (UNCHANGED) */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #FFF8F6;
+}
+
+/* SIDEBAR */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 250px;
+    height: 100%;
+    background: white;
+    padding: 20px;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.side-menu.active {
+    left: 0;
+}
+
+.side-menu a {
+    display: block;
+    width: 100%;
+    padding: 12px 5px;
+    border-bottom: 1px solid #7A1E2C;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+}
+
+.side-menu a:hover {
+    background: #f5f5f5;
+    padding-left: 10px;
+}
+
+</style>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body onload="loadCategory();updateCartCount();displayProducts();searchFromURL();">
+
+<!-- ✅ UPDATED HEADER WITH BACK BUTTON -->
+<header class="top-header">
+    <button onclick="goBack()" class="back-btn">⬅</button>
+    <b>Giftoraa.pk</b>
+</header>
+
+<!-- EXISTING HEADER (UNCHANGED) -->
+<div class="main-header">
+    
+    <div class="menu-icon" onclick="openMenu()">☰</div>
+    <div class="logo">Pretty gifts for pretty souls🌸 </div>
+
+    <div style="position:relative;">
+        🔍 
+        <span onclick="goToCart()" style="cursor:pointer; font-size:22px;">
+            🛒
+            <span id="cartCount" 
+                  style="
+                    position:absolute;
+                    top:-8px;
+                    right:-10px;
+                    background:#7A1E2C;
+                    color:white;
+                    font-size:12px;
+                    padding:2px 6px;
+                    border-radius:50%;">
+                0
+            </span>
+        </span>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sideMenu" class="side-menu">
+    <span class="close-btn" onclick="closeMenu()">✖</span>
+
+    <h3>Categories</h3>
+
+    <a href="index.html">Home</a>
+    <a href="products.html?cat=makeup">Makeup Items</a>
+    <a href="products.html?cat=necklace">Necklace</a>
+    <a href="products.html?cat=bracelet">Bracelete</a>
+    <a href="products.html?cat=earing">Earings</a>
+    <a href="products.html?cat=hairaccessoriess">Hair Accessoriess</a>
+    <a href="products.html?cat=giftboxes">Gift Boxes</a>
+    <a href="products.html?cat=glasshampers">Glass Hampers</a>
+    <a href="products.html?cat=cbouquet">Chocolate Bouquet</a>
+    <a href="products.html?cat=hbouquet">Hijab Bouquet</a>
+    <a href="wishlist.html">wishlist</a>
+
+    <hr>
+
+    <p>📞 0328-8305621</p>
+    <p>📧 giftoraa@gmail.com</p>
+</div>
+
+<nav>
+<a href="products.html" class="active">Products</a>
+</nav>
+
+<div class="container">
+
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search gifts..." onkeyup="searchProducts()">
+</div>
+
+<div style="text-align:center; margin-bottom:20px;">
+<select id="sortSelect" onchange="sortProducts(this.value)">
+    <option value="">Sort By</option>
+    <option value="low-high">Price: Low to High</option>
+    <option value="high-low">Price: High to Low</option>
+</select>
+</div>
+
+<div class="products" id="productList"></div>
+
+</div>
+
+<script>
+
+/* BACK FUNCTION */
+function goBack(){
+    if(document.referrer !== ""){
+        window.history.back();
+    } else {
+        window.location.href = "index.html";
+    }
+}
+
+/* SIDEBAR */
+function openMenu(){
+    document.getElementById("sideMenu").classList.add("active");
+}
+
+function closeMenu(){
+    document.getElementById("sideMenu").classList.remove("active");
+}
+
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

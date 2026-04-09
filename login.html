@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    
+    
+}
+
+/* HEADER */
+#title {
+    text-align: center;
+    font-size: 28px;
+    padding: 20px;
+    background: #7A1E2C;
+    color: #FFF8F6;
+}
+
+/* CENTER FORM */
+.container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* FORM BOX */
+.form-box {
+    text-align: center;
+    background: #FFF8F6;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* INPUT */
+input {
+    padding: 10px;
+    width: 250px;
+    border-radius: 10px;
+    border: 1px solid #7A1E2C;
+}
+
+/* PASSWORD BOX */
+.password-box {
+    position: relative;
+    display: inline-block;
+}
+
+.password-box button {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* TOGGLE LINK */
+.toggle {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
+</style>
+
+</head>
+<body>
+
+
+<header class="top-header">
+    <button onclick="goBack()" class="back-btn">⬅</button>
+    <b>Login</b>
+</header>
+<div class="container form-box">
+
+<!-- LOGIN -->
+<div id="loginForm">
+    <input type="email" id="loginEmail" placeholder="Email"><br><br>
+
+    <div class="password-box">
+        <input type="password" id="loginPass" placeholder="Password">
+        <button onclick="togglePass('loginPass')">👁️</button>
+    </div><br><br>
+
+    <button onclick="login()">Login</button><br><br>
+
+    <p>Don't have account? 
+        <span class="toggle" onclick="showSignup()">Sign up</span>
+    </p>
+</div>
+
+<!-- SIGNUP -->
+<div id="signupForm" style="display:none;">
+    <input type="text" id="signupName" placeholder="Full Name"><br><br>
+
+    <input type="email" id="signupEmail" placeholder="Email"><br><br>
+
+    <div class="password-box">
+        <input type="password" id="signupPass" placeholder="Password">
+        <button onclick="togglePass('signupPass')">👁️</button>
+    </div><br><br>
+
+    <button onclick="sendOTP()">Send OTP</button><br><br>
+
+    <p>Already have account? 
+        <span class="toggle" onclick="showLogin()">Login</span>
+    </p>
+</div>
+
+<!-- OTP VERIFY -->
+<div id="otpForm" style="display:none;">
+    <h3>Enter OTP</h3>
+
+    <input type="text" id="userOTP" placeholder="Enter 5-digit OTP"><br><br>
+
+    <button onclick="verifyOTP()">Verify OTP</button>
+</div>
+
+</div>
+
+<script>
+
+let generatedOTP = "";
+
+// SWITCH FORMS
+function showSignup(){
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("signupForm").style.display = "block";
+    document.getElementById("title").innerText = "Sign Up";
+}
+
+function showLogin(){
+    document.getElementById("signupForm").style.display = "none";
+    document.getElementById("otpForm").style.display = "none";
+    document.getElementById("loginForm").style.display = "block";
+    document.getElementById("title").innerText = "Login";
+}
+
+// PASSWORD SHOW/HIDE
+function togglePass(id){
+    let input = document.getElementById(id);
+    input.type = input.type === "password" ? "text" : "password";
+}
+
+// SEND OTP
+function sendOTP(){
+    let name = document.getElementById("signupName").value;
+    let email = document.getElementById("signupEmail").value;
+    let pass = document.getElementById("signupPass").value;
+
+    if(name === "" || email === "" || pass === ""){
+        alert("Please fill all fields!");
+        return;
+    }
+
+    // Generate 5 digit OTP
+    generatedOTP = Math.floor(10000 + Math.random() * 90000).toString();
+
+    alert("Your OTP is: " + generatedOTP); // demo purpose
+
+    document.getElementById("signupForm").style.display = "none";
+    document.getElementById("otpForm").style.display = "block";
+}
+
+// VERIFY OTP
+function verifyOTP(){
+    let userOTP = document.getElementById("userOTP").value;
+
+    if(userOTP === generatedOTP){
+        let user = {
+            name: document.getElementById("signupName").value,
+            email: document.getElementById("signupEmail").value,
+            pass: document.getElementById("signupPass").value
+        };
+
+        localStorage.setItem("user", JSON.stringify(user));
+
+        alert("Account Created Successfully! 🎉");
+
+        window.location.href = "index.html";
+    } else {
+        alert("Invalid OTP!");
+    }
+}
+
+// LOGIN FUNCTION
+function login(){
+    let email = document.getElementById("loginEmail").value;
+    let pass = document.getElementById("loginPass").value;
+
+    let savedUser = JSON.parse(localStorage.getItem("user"));
+
+    if(!savedUser){
+        alert("No account found! Please sign up.");
+        return;
+    }
+
+    if(email === savedUser.email && pass === savedUser.pass){
+        alert("Login Successful!");
+        window.location.href = "index.html";
+    } else {
+        alert("Invalid Email or Password!");
+    }
+}
+
+function validateForm(){
+
+    let email = document.getElementById("email").value;
+    let phone = document.getElementById("phone").value;
+    let password = document.getElementById("password").value;
+
+    // 📧 EMAIL CHECK (gmail only)
+    let emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+    if(!emailPattern.test(email)){
+        alert("❌ Enter valid Gmail (example@gmail.com)");
+        return false;
+    }
+
+    // 📱 PHONE CHECK (11 digits)
+    let phonePattern = /^[0-9]{11}$/;
+
+    if(!phonePattern.test(phone)){
+        alert("❌ Phone number must be 11 digits");
+        return false;
+    }
+
+    // 🔒 PASSWORD CHECK (8+ chars + special char)
+    let passwordPattern = /^(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+
+    if(!passwordPattern.test(password)){
+        alert("❌ Password must be 8+ characters & include 1 special character");
+        return false;
+    }
+
+    alert("✅ Form Submitted Successfully!");
+    return true;
+}
+/* BACK FUNCTION */
+function goBack(){
+    if(document.referrer !== ""){
+        window.history.back();
+    } else {
+        window.location.href = "index.html";
+    }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Checkout</title>
+
+<style>
+
+/* BODY */
+body {
+    margin: 0;
+    font-family: Arial;
+    /* background-image: url(images/levender.jpeg);  <-- removed */
+}
+
+/* HEADER (NO CHANGE) */
+header {
+    text-align: center;
+    padding: 20px;
+    background: #7A1E2C;
+    color: white;
+    font-size: 24px;
+}
+
+/* LAYOUT */
+.container {
+    display: flex;
+    gap: 40px;
+    padding: 30px;
+}
+
+/* LEFT */
+.left {
+    flex: 1;
+    padding-left: 140px;
+}
+
+/* RIGHT */
+.right {
+    flex: 1;
+    padding: 20px;
+}
+
+/* INPUT */
+input[type="text"] {
+    padding: 10px;
+    width: 250px;
+    border-radius: 10px;
+    border: 1px solid #7A1E2C;
+}
+
+/* PAYMENT */
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* IMAGE */
+.checkout-img {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+/* BUTTON */
+button {
+    padding: 10px 20px;
+    background: #7A1E2C;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+</style>
+
+</head>
+
+<body onload="loadCheckout()">
+
+<header>Checkout</header>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h2>Delivery Details</h2>
+
+<input type="text" id="name" placeholder="Full Name"><br><br>
+
+<input type="text" id="phone" placeholder="Phone Number" maxlength="11"><br><br>
+
+<input type="text" id="address" placeholder="Address"><br><br>
+<input type="text" id="city" placeholder="City"><br><br>
+
+<h2>Payment Method</h2>
+
+<div class="payment-option">
+<input type="radio" name="payment" value="cod" onclick="hidePaymentBox()">
+<label>Cash on Delivery</label>
+</div>
+
+<div class="payment-option">
+<input type="radio" name="payment" value="easypaisa" onclick="showPaymentBox('Easypaisa Number')">
+<label>Easypaisa</label>
+</div>
+
+<div class="payment-option">
+<input type="radio" name="payment" value="jazzcash" onclick="showPaymentBox('JazzCash Number')">
+<label>JazzCash</label>
+</div>
+
+<div class="payment-option">
+<input type="radio" name="payment" value="card" onclick="showPaymentBox('Card Number')">
+<label>Credit/Debit Card</label>
+</div>
+
+<div id="paymentBox" style="display:none;">
+    <input type="text" id="paymentInput"><br><br>
+</div>
+
+<h2>Order Summary</h2>
+
+<p>Products Total: Rs. <span id="productTotal">0</span></p>
+<p>Delivery Charges: Rs. 300</p>
+<h3>Total Amount: Rs. <span id="finalTotal">0</span></h3>
+
+<br>
+
+<button onclick="placeOrder()">Place Order</button>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<img src="images/m4.jpg" class="checkout-img">
+
+<div id="checkoutItems"></div>
+
+</div>
+
+</div>
+
+<script>
+
+// LOAD DATA
+function loadCheckout(){
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    let total = 0;
+    let container = document.getElementById("checkoutItems");
+
+    container.innerHTML = "";
+
+    cart.forEach(item => {
+        total += item.price * item.qty;
+
+        container.innerHTML += `
+        <div style="display:flex; gap:10px; margin-bottom:10px;">
+            <img src="${item.image}" width="60">
+            <div>
+                <p>${item.name}</p>
+                <p>Rs. ${item.price} x ${item.qty}</p>
+            </div>
+        </div>`;
+    });
+
+    document.getElementById("productTotal").innerText = total;
+    document.getElementById("finalTotal").innerText = total + 300;
+}
+
+// PAYMENT
+function showPaymentBox(text){
+    document.getElementById("paymentBox").style.display = "block";
+    document.getElementById("paymentInput").placeholder = text;
+}
+
+function hidePaymentBox(){
+    document.getElementById("paymentBox").style.display = "none";
+}
+
+// ORDER
+function placeOrder(){
+
+    let name = document.getElementById("name").value.trim();
+    let phone = document.getElementById("phone").value.trim();
+    let address = document.getElementById("address").value.trim();
+    let city = document.getElementById("city").value.trim();
+
+    let payment = document.querySelector("input[name='payment']:checked");
+
+    if(name === "" || phone === "" || address === "" || city === ""){
+        alert("❌ Please fill all fields!");
+        return;
+    }
+
+    let phonePattern = /^[0-9]{11}$/;
+
+    if(!phonePattern.test(phone)){
+        alert("❌ Phone number must be exactly 11 digits!");
+        return;
+    }
+
+    if(!payment){
+        alert("❌ Please select payment method!");
+        return;
+    }
+
+    if(payment.value !== "cod"){
+        let payInput = document.getElementById("paymentInput").value.trim();
+
+        if(payInput === ""){
+            alert("❌ Please enter payment details!");
+            return;
+        }
+    }
+
+    if(payment.value === "cod"){
+        alert("✅ Order Confirmed! Pay on Delivery 🚚");
+    } else {
+        alert("✅ Payment Successful & Order Placed 🎉");
+    }
+
+    localStorage.removeItem("cart");
+
+    window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

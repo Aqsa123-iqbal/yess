@@ -1,0 +1,196 @@
+body {
+    font-family: 'Segoe UI';
+    margin: 0;
+    background: linear-gradient(to right, #FFF8F6);
+}
+
+/* HEADER */
+header {
+    background: linear-gradient(45deg, #7A1E2C);
+    color: #FFF8F6;
+    padding: 15px;
+    text-align: center;
+    font-size: 26px;
+}
+
+/* NAVBAR */
+nav {
+    display: flex;
+    justify-content: center;
+    background: #FFF8F6;
+    padding: 10px;
+}
+
+/* NAV LINKS */
+nav a {
+    color: FFF8F6;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+nav a:hover {
+    background: #FFF8F6;
+    color: #7A1E2C;
+}
+
+/* ACTIVE LINK */
+nav a.active {
+    background: #7A1E2C;
+    color: #faf7f8;
+}
+
+/* CONTAINER */
+.container {
+    padding: 20px;
+}
+
+/* SEARCH BOX */
+.search-box {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    padding: 10px;
+    width: 60%;
+    border-radius: 20px;
+    border: 1px solid #7A1E2C;
+}
+
+/* PRODUCTS GRID */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+
+/* CARD */
+.card {
+    background:#FFF8F6;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover; 
+    padding: 2px;
+}
+
+/* BUTTON */
+button {
+    background: #7A1E2C;
+    color: #FFF8F6;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #eb0404;
+}
+
+/* ========================= */
+/* 🔥 MENU SIDEBAR */
+/* ========================= */
+
+/* MENU ICON */
+.menu-icon {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* SIDEBAR */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 250px;
+    height: 100%;
+    background: #FFF8F6;
+    padding: 20px;
+    transition: 0.3s;
+    box-shadow: 2px 0 10px #FFF8F6;
+    z-index: 1000;
+}
+
+/* ACTIVE */
+.side-menu.active {
+    left: 0;
+}
+
+
+
+/* CLOSE BUTTON */
+.close-btn {
+    font-size: 20px;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 20px;
+}
+.menu-icon {
+    margin-left: 10px;
+}
+.menu-icon {
+    font-size: 25px;
+    cursor: pointer;
+    color: #7A1E2C;   /* 🔥 ADD THIS */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;   /* 🔥 change */
+    width: 260px;
+    height: 100%;
+    background: #FFF8F6;
+    padding: 20px;
+    transform: translateX(-100%); /* 🔥 main fix */
+    transition: 0.3s ease;
+    z-index: 999;
+}
+
+/* jab open ho */
+.side-menu.active {
+    transform: translateX(0);
+}
+button {
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+h2 {
+    margin-top: 10px;
+}
+/* BACK BUTTON */
+.back-btn {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border: none;
+    background: white;
+    color: #7A1E2C;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}

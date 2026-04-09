@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Product Detail</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* 🔥 IMAGE FIX */
+.product-img {
+    width: 100%;
+    text-align: center;
+    background: #FFF8F6;
+    padding: 10px;
+}
+
+.product-img img {
+    width: 100%;
+    max-height: 400px;   /* 🔥 height control */
+    object-fit: contain; /* 🔥 FULL IMAGE SHOW */
+    border-radius: 10px;
+}
+
+/* BUTTON STYLE (same design) */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    margin-top: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cart-btn {
+    background: #7A1E2C;
+    color: #FFF8F6;
+}
+
+.buy-btn {
+    background: black;
+    color:#FFF8F6;
+}
+
+</style>
+
+</head>
+
+<body onload="loadProduct()">
+
+<h2 style="padding:10px;">Product Detail</h2>
+
+<div id="detail"></div>
+
+<script>
+
+let qty = 1;
+
+// LOAD PRODUCT
+function loadProduct(){
+    let product = JSON.parse(localStorage.getItem("selectedProduct"));
+
+    let div = document.getElementById("detail");
+
+    div.innerHTML = `
+    
+    <div class="product-img">
+        <img src="${product.img}">
+    </div>
+
+    <div style="padding:10px;">
+        <h2>${product.name}</h2>
+
+        <p style="color:red; font-size:22px;">
+            Rs.${product.price}
+        </p>
+
+        <br>
+
+        <!-- QUANTITY -->
+        <div style="display:flex; gap:10px; align-items:center;">
+            <button id="minusBtn">-</button>
+            <span id="qty">1</span>
+            <button id="plusBtn">+</button>
+
+            <button id="wishBtn">❤️</button>
+        </div>
+
+        <br>
+
+        <!-- ADD TO CART -->
+        <button onclick="addToCart()" class="btn cart-btn">
+            ADD TO CART
+        </button>
+
+        <!-- BUY NOW -->
+        <button onclick="buyNow()" class="btn buy-btn">
+            BUY IT NOW
+        </button>
+
+        <br><br>
+
+        <!-- DESCRIPTION -->
+        <h3>Product Description:</h3>
+        <p>${product.description || "No description available"}</p>
+
+         <h3>Features:</h3>
+        <ul>
+    ${
+        product.features 
+        ? product.features.map(f => `<li>● ${f}</li>`).join("") 
+        : "<li>No features available</li>"
+    }
+</ul>
+    </div>
+    `;
+
+    // EVENTS
+    document.getElementById("plusBtn").onclick = function(){
+        qty++;
+        document.getElementById("qty").innerText = qty;
+    }
+
+    document.getElementById("minusBtn").onclick = function(){
+        if(qty > 1){
+            qty--;
+            document.getElementById("qty").innerText = qty;
+        }
+    }
+
+    document.getElementById("wishBtn").onclick = addToWishlist;
+}
+
+
+// ADD TO CART
+function addToCart(){
+    let product = JSON.parse(localStorage.getItem("selectedProduct"));
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    let existing = cart.find(p => p.name === product.name);
+
+    if(existing){
+        existing.qty += qty;
+    } else {
+        cart.push({...product, qty: qty});
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Added to Cart 🛒");
+}
+
+// WISHLIST
+function addToWishlist(){
+    let product = JSON.parse(localStorage.getItem("selectedProduct"));
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    let exists = wishlist.find(p => p.name === product.name);
+
+    if(!exists){
+        wishlist.push(product);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        alert("Added to Wishlist ❤️");
+    } else {
+        alert("Already in Wishlist!");
+    }
+}
+
+// BUY NOW
+function buyNow(){
+    addToCart();
+    window.location.href = "checkout.html";
+}
+
+</script>
+
+</body>
+</html>
